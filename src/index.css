@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/* Ensure the app takes up full height */
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+}
