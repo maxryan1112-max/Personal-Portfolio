@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import TopBar from './components/TopBar';
 import HomeWindow from './components/HomeWindow';
 import AboutWindow from './components/AboutWindow';
@@ -7,11 +7,16 @@ import LinksWindow from './components/LinksWindow';
 import MusicWindow from './components/MusicWindow';
 import GameWindow from './components/GameWindow';
 
+import tracks from './data/tracks';
+
 export default function App() {
     // which window is currently open
     const [currentWindow, setCurrentWindow] = useState('home');
     // theme state (light/dark)
     const [darkMode, setDarkMode] = useState(false);
+    const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioRef = useRef(null);
 
     // toggle dark mode by applying the 'dark' class to <html>
     useEffect(() => {
@@ -22,10 +27,53 @@ export default function App() {
         }
     }, [darkMode]);
 
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.load();
+            if (isPlaying) {
+                audioRef.current.play().catch(() => {});
+            }
+        }
+    }, [currentTrackIndex, isPlaying]);
+
     // functions to control windows and theme
     const openWindow = (name) => setCurrentWindow(name);
     const closeWindow = () => setCurrentWindow('home');
     const toggleTheme = () => setDarkMode((prev) => !prev);
+
+    const togglePlay = async () => {
+        if (!audioRef.current) return;
+
+        if (isPlaying) {
+            audioRef.current.pause();
+            setIsPlaying(false);
+        } else {
+            try {
+                await audioRef.current.play();
+                setIsPlaying(true);
+            } catch (error) {
+                console.error('Audio playback failed:', error);
+            }
+        }
+    };
+
+    const playTrack = async (index) => {
+        setCurrentTrackIndex(index);
+        setIsPlaying(true);
+
+        requestAnimationFrame(async () => {
+            if (!audioRef.current) return;
+            try {
+                await audioRef.current.play();
+            } catch (error) {
+                console.error('Track start failed:', error);
+            }
+        });
+    };
+
+    const nextTrack = () => {
+        setCurrentTrackIndex((prev) => (prev + 1) % tracks.length);
+    };
 
     // picks which window component to display
     let windowComponent ;
@@ -43,7 +91,17 @@ export default function App() {
             windowComponent = <ContactWindow onClose={closeWindow} />;
             break;
         case 'music':
-            windowComponent = <MusicWindow onClose={closeWindow} />;
+            windowComponent = (
+                <MusicWindow
+                    onClose={closeWindow}
+                    tracks={tracks}
+                    currentTrackIndex={currentTrackIndex}
+                    isPlaying={isPlaying}
+                    togglePlay={togglePlay}
+                    nextTrack={nextTrack}
+                    playTrack={playTrack}
+                />
+            );
             break;
         case 'game':
             windowComponent = <GameWindow onClose={closeWindow} />;
@@ -58,7 +116,14 @@ export default function App() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f4efff] via-[#efe7ff] to-[#dbeafe] text-slate-900 dark:from-[#090b17] dark:via-[#121a33] dark:to-[#1a1038] dark:text-slate-100 transition-colors duration-500">
+        <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#f4efff] via-[#efe7ff] 
+        to-[#dbeafe] text-slate-900 dark:from-[#090b17] dark:via-[#121a33] dark:to-[#1a1038] 
+        dark:text-slate-100 transition-colors duration-500">
+
+            <audio ref={audioRef} onEnded={nextTrack}>
+                <source src={tracks[currentTrackIndex].src} type="audio/mpeg" />
+                Your browser does not support the audio element.
+            </audio>
 
             <TopBar darkMode={darkMode} toggleTheme={toggleTheme} />
 

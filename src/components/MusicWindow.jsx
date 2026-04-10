@@ -1,35 +1,50 @@
-import { useState, useEffect, useRef } from 'react';
 import WindowFrame from './WindowFrame';
-import tracks from '../data/tracks';
 
-// Simple audio player with a “next track” button.
-export default function MusicWindow({ onClose }) {
-    const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-    const audioRef = useRef(null);
+// UI-only music panel. Audio is controlled by App.jsx
+export default function MusicWindow({
+  onClose,
+  tracks,
+  currentTrackIndex,
+  isPlaying,
+  togglePlay,
+  nextTrack,
+  playTrack,
+}) {
+  return (
+    <WindowFrame title="Music Player" onClose={onClose}>
+      <p className="mb-2">Now playing: {tracks[currentTrackIndex].title}</p>
 
-    useEffect(() => {
-        const audioEl = audioRef.current;
-        if (audioEl) {
-            audioEl.load();
-            audioEl.play().catch(() => {
-            });
-        }
-    }, [currentTrackIndex]);
+      <div className="flex gap-3 mt-4 mb-6">
+        <button
+          onClick={togglePlay}
+          className="px-4 py-2 bg-purple-600 text-white rounded"
+        >
+          {isPlaying ? 'Pause' : 'Play'}
+        </button>
+        <button
+          onClick={nextTrack}
+          className="px-4 py-2 bg-slate-700 text-white rounded"
+        >
+          Next Track
+        </button>
+      </div>
 
-    const nextTrack = () => {
-        setCurrentTrackIndex((currentTrackIndex + 1) % tracks.length);
-    };
-
-    return (
-        <WindowFrame title="Music Player" onClose={onClose}>
-            <p className="mb-2">Now playing: {tracks[currentTrackIndex].title}</p>
-            <audio ref={audioRef} controls className="w-full">
-                <source src={tracks[currentTrackIndex].src} type="audio/mpeg" />
-                Your browser does not support the audio element.
-            </audio>
-            <button onClick={nextTrack} className="mt-4 px-4 py-2 bg-purple-600 text-white rounded">
-                Next Track
+      <ul className="space-y-2">
+        {tracks.map((track, index) => (
+          <li key={track.id}>
+            <button
+              onClick={() => playTrack(index)}
+              className={`w-full text-left px-3 py-2 rounded border ${
+                index === currentTrackIndex
+                  ? 'bg-purple-100 dark:bg-purple-900 border-purple-400'
+                  : 'bg-transparent border-slate-300 dark:border-slate-700'
+              }`}
+            >
+              {track.title}
             </button>
-        </WindowFrame>
-    );
+          </li>
+        ))}
+      </ul>
+    </WindowFrame>
+  );
 }
