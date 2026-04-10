@@ -4,7 +4,6 @@ import HomeWindow from './components/HomeWindow';
 import AboutWindow from './components/AboutWindow';
 import ProjectsWindow from './components/ProjectsWindow';
 import LinksWindow from './components/LinksWindow';
-import ContactWindow from './components/ContactWindow';
 import MusicWindow from './components/MusicWindow';
 import GameWindow from './components/GameWindow';
 
@@ -63,7 +62,7 @@ export default function App() {
 
             <TopBar darkMode={darkMode} toggleTheme={toggleTheme} />
 
-            <main className="flex-grow flex items-center justify-center p-4">
+            <main className="flex-grow flex items-center justify-center p-">
                 {windowComponent}
             </main>
 
