@@ -7,13 +7,11 @@ export default function MusicWindow({ onClose }) {
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
     const audioRef = useRef(null);
 
-    // When the current track changes, reload & play it
     useEffect(() => {
         const audioEl = audioRef.current;
         if (audioEl) {
             audioEl.load();
             audioEl.play().catch(() => {
-                /* browsers may block autoplay; user can click play */
             });
         }
     }, [currentTrackIndex]);

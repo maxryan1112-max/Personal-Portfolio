@@ -4,7 +4,7 @@ const projects = [
     id: 1,
     title: 'Portfolio Game',
     description: 'A Unity WebGL mini game embedded in my portfolio.',
-    url: '#', // replace with real URL or remove if not available
+    url: '#', 
   },
   {
     id: 2,

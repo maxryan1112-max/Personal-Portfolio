@@ -4,7 +4,7 @@ const tracks = [
   {
     id: 1,
     title: 'Lofi Mix',
-    src: '/audio/lofi.mp3',
+    src: '/Users/ryan/COSC/Personal/Personal-Portfolio/src/data/audio/Chill Lofi Hip Hop Beat.mp3',
   },
   {
     id: 2,
