@@ -28,7 +28,7 @@ export default function AboutWindow({ onClose }) {
             <div className="grid md:grid-cols-[180px_1fr] gap-8 items-start">
                 <div className="flex justify-center md:justify-start">
                     <img
-                        src="/images/profile-picture.jpeg"
+                        src={`${import.meta.env.BASE_URL}images/profile-picture.jpeg`}
                         alt="Ryan Mwaura profile"
                         className="w-36 h-36 md:w-40 md:h-40 rounded-2xl object-cover border border-white/20 shadow-xl"
                     />

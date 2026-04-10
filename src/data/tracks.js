@@ -1,10 +1,12 @@
 // Music tracks used by the MusicWindow.
 // Place the actual mp3 files in public/audio/.
+const base = import.meta.env.BASE_URL;
 const tracks = [
   {
     id: 1,
     title: 'Lofi Hip Hop Beat',
-    src: '/audio/Chill Lofi Hip Hop Beat.mp3',
+    
+    src: `${base}audio/Chill Lofi Hip Hop Beat.mp3`
   },
   {
     id: 2,

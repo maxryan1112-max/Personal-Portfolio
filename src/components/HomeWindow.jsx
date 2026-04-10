@@ -70,7 +70,7 @@ export default function HomeWindow({ onOpen, openMusic }) {
                 className="fixed bottom-0 right-2 z-20 hidden md:block focus:outline-none"
             >
                 <img
-                    src="/images/lofi-boy-coding.webp"
+                    src={`${import.meta.env.BASE_URL}images/lofi-boy-coding.webp`}
                     alt="Lofi boy coding at a computer"
                     className="w-[460px] lg:w-[580px] object-contain drop-shadow-2xl transition-transform duration-300 hover:scale-105 animate-float"
                 />
