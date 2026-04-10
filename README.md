@@ -1,16 +1,19 @@
-# React + Vite
+# OS-Style Interactive Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The interactive portfolio website is designed to simulate a desktop-like environment, allowing users to navigate its content through a visually engaging, intuitive interface. 
+Upon loading the website, users are presented with a central home screen display key navigation icons. Each icon represents a different section of the portfolio. 
 
-Currently, two official plugins are available:
+## Navigation 
+Users can click on the following icons to explore the website: 
+About: opens a window containing background information about the developer.
+Projects: Displays a collection of projects with descriptions and links.
+Links: Provides access to external platforms, including GitHub and social media handles.
+Game: Launches an embedded interactive game built using Unity WebGL.
+Music: Opens a music player interface allowing users to play and navigate through different tracks. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Each section opens in a window-style interface that can be closed using the close button, similar to a traditional operating system. 
+There are other features I hope to implement in the future such as a light mode, hovering animations to give visual feedback and sound effects. 
 
-## React Compiler
+## System Requirements
+The website is designed to run in modern web browsers such as Chrome, Safari or Firefox. No additional installation is required, and all features are accessible directly through the browser. 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
