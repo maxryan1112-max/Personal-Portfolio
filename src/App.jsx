@@ -17,6 +17,11 @@ export default function App() {
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [duration, setDuration] = useState(0);
+    const [isMuted, setIsMuted] = useState(false);
+    
+    
 
     // toggle dark mode by applying the 'dark' class to <html>
     useEffect(() => {
@@ -74,6 +79,30 @@ export default function App() {
     const nextTrack = () => {
         setCurrentTrackIndex((prev) => (prev + 1) % tracks.length);
     };
+    const handleTimeUpdate = () => {
+        if (!audioRef.current) return;
+        setCurrentTime(audioRef.current.currentTime);
+    };
+
+const handleLoadedMetadata = () => {
+        if (!audioRef.current) return;
+        setDuration(audioRef.current.duration || 0);
+    };
+
+const toggleMute = () => {
+        if (!audioRef.current) return;
+
+const newMuteState = !isMuted;
+        audioRef.current.muted = newMuteState;
+        setIsMuted(newMuteState);
+};
+
+const handleSeek = (event) => {
+    const value = Number(event.target.value);
+        if (!audioRef.current) return;
+        audioRef.current.currentTime = value;
+        setCurrentTime(value);
+    };
 
     // picks which window component to display
     let windowComponent ;
@@ -91,18 +120,19 @@ export default function App() {
             windowComponent = <ContactWindow onClose={closeWindow} />;
             break;
         case 'music':
-            windowComponent = (
-                <MusicWindow
-                    onClose={closeWindow}
-                    tracks={tracks}
-                    currentTrackIndex={currentTrackIndex}
-                    isPlaying={isPlaying}
-                    togglePlay={togglePlay}
-                    nextTrack={nextTrack}
-                    playTrack={playTrack}
-                />
-            );
-            break;
+            windowComponent = (<MusicWindow onClose={closeWindow}
+                tracks={tracks}
+                currentTrackIndex={currentTrackIndex}
+                isPlaying={isPlaying}
+                togglePlay={togglePlay}
+                nextTrack={nextTrack}
+                playTrack={playTrack}
+                currentTime={currentTime}
+                duration={duration}
+                onSeek={handleSeek}
+    />
+  );
+  break;
         case 'game':
             windowComponent = <GameWindow onClose={closeWindow} />;
             break;
@@ -120,12 +150,22 @@ export default function App() {
         to-[#dbeafe] text-slate-900 dark:from-[#090b17] dark:via-[#121a33] dark:to-[#1a1038] 
         dark:text-slate-100 transition-colors duration-500">
 
-            <audio ref={audioRef} onEnded={nextTrack}>
+            <audio
+                ref={audioRef}
+                onEnded={nextTrack}
+                onTimeUpdate={handleTimeUpdate}
+                onLoadedMetadata={handleLoadedMetadata}
+>
                 <source src={tracks[currentTrackIndex].src} type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
 
-            <TopBar darkMode={darkMode} toggleTheme={toggleTheme} />
+            <TopBar
+                darkMode={darkMode}
+                toggleTheme={toggleTheme}
+                isMuted={isMuted}
+                toggleMute={toggleMute}
+/>
 
             <main className="flex-grow flex items-center justify-center p-">
                 {windowComponent}

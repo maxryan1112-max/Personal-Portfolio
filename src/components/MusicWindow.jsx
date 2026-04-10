@@ -9,10 +9,37 @@ export default function MusicWindow({
   togglePlay,
   nextTrack,
   playTrack,
+  currentTime,
+  duration,
+  onSeek,
 }) {
+  const formatTime = (time) => {
+    if (!Number.isFinite(time)) return '0:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60)
+      .toString()
+      .padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  };
+
   return (
     <WindowFrame title="Music Player" onClose={onClose}>
       <p className="mb-2">Now playing: {tracks[currentTrackIndex].title}</p>
+
+      <div className="mb-4">
+        <input
+          type="range"
+          min="0"
+          max={duration || 0}
+          value={currentTime}
+          onChange={onSeek}
+          className="w-full accent-purple-500"
+        />
+        <div className="mt-1 flex justify-between text-sm text-slate-600 dark:text-slate-300">
+          <span>{formatTime(currentTime)}</span>
+          <span>{formatTime(duration)}</span>
+        </div>
+      </div>
 
       <div className="flex gap-3 mt-4 mb-6">
         <button
@@ -47,4 +74,5 @@ export default function MusicWindow({
       </ul>
     </WindowFrame>
   );
+  
 }
