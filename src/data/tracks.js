@@ -15,8 +15,8 @@ const tracks = [
   },
   {
     id: 3,
-    title: 'My Podcast',
-    src: '/audio/podcast.mp3',
+    title: 'The Three Musicteers: Weekly Music Listening #3',
+    src: `${base}audio/Podcast Episode Submission.mp3`,
   },
 ];
 
